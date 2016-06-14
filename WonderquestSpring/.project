@@ -3,6 +3,7 @@
 	<name>WonderquestSpring</name>
 	<comment></comment>
 	<projects>
+		<project>WonderquestEntities</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
