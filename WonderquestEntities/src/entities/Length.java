@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -15,16 +16,20 @@ public class Length {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	@Column(name="time description")
+	
 	private String time_description;
 	
 	// missing foreign key connection here 
 	
 //	@OneToOne(mappedBy = "length")
 //	private LegOfTrip legOfTrip;
+	@OneToOne
+	@PrimaryKeyJoinColumn
+	private LegOfTrip legOfTrip;
 //	
-//	@OneToOne(mappedBy = "length")
-//	private Trip trip;
+	@OneToOne
+	@PrimaryKeyJoinColumn
+	private Trip trip;
 	
 	public Length() {
 		

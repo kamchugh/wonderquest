@@ -15,7 +15,7 @@ public class Employee {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String position;
-	private Boolean isAdmin;
+	private String isAdmin;
 	// foreign key
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -25,7 +25,7 @@ public class Employee {
 		
 	}
 
-	public Employee(int id, String position, Boolean isAdmin, User user) {
+	public Employee(int id, String position, String isAdmin, User user) {
 		super();
 		this.id = id;
 		this.position = position;
@@ -49,11 +49,11 @@ public class Employee {
 		this.position = position;
 	}
 
-	public Boolean getIsAdmin() {
+	public String getIsAdmin() {
 		return isAdmin;
 	}
 
-	public void setIsAdmin(Boolean isAdmin) {
+	public void setIsAdmin(String isAdmin) {
 		this.isAdmin = isAdmin;
 	}
 

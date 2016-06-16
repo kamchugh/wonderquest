@@ -3,12 +3,18 @@ package entities;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 
 @Entity
 @Table(name="USER")
@@ -25,13 +31,16 @@ public class User {
 	private String emailAddress;
 	private String profImage;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Interest> interests;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Contact> contacts;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Trip> trips;
 	
 	@OneToOne(mappedBy = "user")
@@ -166,10 +175,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", fname=" + fname + ", lname="
-				+ lname + ", gender=" + gender + ", nationality=" + nationality + ", emailAddress=" + emailAddress
-				+ ", profImage=" + profImage + ", interests=" + interests + ", contacts=" + contacts + ", trips="
-				+ trips + ", employee=" + employee + "]";
+		return "User [id=" + id + "]";
 	}	
 
 }

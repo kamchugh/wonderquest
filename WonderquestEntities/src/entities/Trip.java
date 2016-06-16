@@ -1,11 +1,13 @@
 package entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +17,8 @@ public class Trip {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne
-	@JoinColumn(name = "length_id")
+	
+	@OneToOne(mappedBy="trip", cascade=CascadeType.ALL)
 	private Length length;
 	
 	private String description;
@@ -71,7 +73,7 @@ public class Trip {
 
 	@Override
 	public String toString() {
-		return "Trip [id=" + id + ", length=" + length + ", description=" + description + ", user=" + user + "]";
+		return "Trip [id=" + id + ", length=" + length + ", description=" + description + "]";
 	}
 
 }

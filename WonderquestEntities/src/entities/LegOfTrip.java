@@ -2,6 +2,7 @@ package entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,8 +31,7 @@ public class LegOfTrip {
 	@ManyToOne
 	private Trip trip;
 	
-	@JoinColumn(name = "length_id")
-	@OneToOne
+	@OneToOne(mappedBy="legOfTrip", cascade=CascadeType.ALL)
 	private Length length;
 	
 	@OneToMany(mappedBy = "legOfTrip")
