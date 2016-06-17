@@ -58,11 +58,21 @@
 					
 					<h3>${user.id} user id.</h3>
 				</c:if>
-				<c:if test="${! empty(trips)}">
-					<c:forEach var="b" items="${trips}">
-						<c:if test="${! empty(b)}">
+				<c:if test="${! empty(allTrips)}">
+					<c:forEach var="trip" items="${allTrips}">
+						<c:if test="${! empty(trip)}">
 							<div>
-								${b.description}
+								${trip.description}
+									<c:if test="${! empty(trip)}">
+										<c:forEach var="leg" items="${trip.legsOfTrip}">
+											<c:if test="${! empty(leg)}">
+												<div>
+													${leg.id}
+											 	
+												</div>
+											</c:if>
+										</c:forEach>
+									</c:if>
 							</div>
 						</c:if>
 					</c:forEach>

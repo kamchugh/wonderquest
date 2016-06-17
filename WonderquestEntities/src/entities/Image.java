@@ -15,7 +15,7 @@ public class Image {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	@Column(name="image_url")
+	@Column(name="img_url")
 	private String imageUrl;
 	
 	@ManyToOne

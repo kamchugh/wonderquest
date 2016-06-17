@@ -43,6 +43,14 @@ public class User {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Trip> trips;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<LegOfTripComment> legOfTripComments;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<TripComment> tripComment;
+	
 	@OneToOne(mappedBy = "user")
 	private Employee employee;
 	

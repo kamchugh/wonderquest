@@ -18,6 +18,10 @@
 		<class>entities.City</class>
 		<class>entities.Length</class>
 		<class>entities.Continent</class>
+		<class>entities.TransportationTo</class>
+		<class>entities.TripComment</class>
+		<class>entities.LegOfTripComment</class>
+		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wonderquest"/>
 				<property name="javax.persistence.jdbc.user" value="root" />

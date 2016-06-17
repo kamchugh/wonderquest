@@ -43,8 +43,10 @@ public class WonderquestController {
 	@RequestMapping("gettrips.do")
 	public ModelAndView viewAllTrips(@RequestParam("id") String id) {
 		List<Trip> allTrips = dao.getAllTrips();
+		System.out.println(allTrips);
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("trips", allTrips);
+		mv.setViewName("index.jsp");
+		mv.addObject("allTrips", allTrips);
 		return mv;
 	}
 	
