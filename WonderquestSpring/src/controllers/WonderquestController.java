@@ -6,12 +6,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import data.WonderquestDAO;
+import entities.LegOfTrip;
 import entities.Trip;
 import entities.User;
 
@@ -40,6 +42,8 @@ public class WonderquestController {
 //		return user;
 //	}
 	
+	// get all the trips available 
+	
 	@RequestMapping("gettrips.do")
 	public ModelAndView viewAllTrips(@RequestParam("id") String id) {
 		List<Trip> allTrips = dao.getAllTrips();
@@ -49,6 +53,21 @@ public class WonderquestController {
 		mv.addObject("allTrips", allTrips);
 		return mv;
 	}
+	
+	// figure out what to do here if someone isn't signed in 
+	
+	@RequestMapping("buildYourTrip.do")
+	public ModelAndView buildTrip(@ModelAttribute("user") User user) {
+		System.out.println(user);
+		ModelAndView mv = new ModelAndView();
+			List<Trip> allTrips = dao.getAllTrips();
+			System.out.println(allTrips);
+			mv.setViewName("tripBuild.jsp");
+			mv.addObject("user", user);
+		return mv;
+	}
+	
+	// create the first leg of a new trip
 	
 	
 	// sign a user in
@@ -70,7 +89,10 @@ public class WonderquestController {
 	public ModelAndView viewSpecificTrips(@RequestParam("city") String city,
 			@RequestParam("country") String country, @RequestParam("continent") String continent,
 		@RequestParam("totalTripLength") String totalTripLength, HttpSession session) {
+		List<LegOfTrip> allMatchingLegs = dao.getAllMatchingTrips(city, country, continent, totalTripLength);
+		System.out.println("All matching legs" + allMatchingLegs);
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("allMatchingLegs", allMatchingLegs);
 		mv.setViewName("index.jsp");
 		return mv;
 	}

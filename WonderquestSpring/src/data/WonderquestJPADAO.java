@@ -1,5 +1,6 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import entities.LegOfTrip;
 import entities.Trip;
 import entities.User;
 
@@ -72,6 +74,58 @@ public class WonderquestJPADAO implements WonderquestDAO {
 		String search = "select t from Trip t";
 		List<Trip> allTrips = em.createQuery(search, Trip.class).getResultList();
 		return allTrips;
+	}
+	
+	//get a list of all the legs of trips
+	public List<LegOfTrip> getAllLegsOfTrips() {
+		String search = "select l from LegOfTrip l";
+		List<LegOfTrip> allLegsOfTrips = em.createQuery(search, LegOfTrip.class).getResultList();
+		return allLegsOfTrips;
+	}
+	
+	//get all matching trips
+	public List<LegOfTrip> getAllMatchingTrips(String city, String country, String continent, String lengthOfLeg) {
+		List <LegOfTrip> allLegsOfTrips = getAllLegsOfTrips();
+		System.out.println(city);
+		System.out.println("ALL THE LEGS");
+		System.out.println(allLegsOfTrips);
+		List <LegOfTrip> matchingTrips = new ArrayList<>();
+		System.out.println("I GET INTO THE DAO");
+		for (LegOfTrip legOfTrip : allLegsOfTrips) {
+			System.out.println(city);
+			System.out.println(legOfTrip.getCity().getName());
+			if (city.equals(legOfTrip.getCity().getName())) {
+				matchingTrips.add(legOfTrip);
+				System.out.println("I matched a city");
+				
+			}
+			else if (country.equals(legOfTrip.getCity().getCountry().getName())){
+				matchingTrips.add(legOfTrip);
+				System.out.println("I matched a country");
+				
+			}
+			else if (continent.equals(legOfTrip.getCity().getCountry().getContinent().getName())) {
+				matchingTrips.add(legOfTrip);
+				System.out.println("I matched a continent");
+				
+			}
+			
+			// something is wrong with this - you need to fix it! 
+//			else if (lengthOfLeg.equals(legOfTrip.getLength().getTime_description())) {
+//				matchingTrips.add(legOfTrip);
+//				System.out.println("I matched a length");
+//				
+//			}
+			else {
+				LegOfTrip noleg = new LegOfTrip();
+				matchingTrips.add(noleg);
+				System.out.println("I didn't match anything in the list");
+			}
+		}
+		System.out.println("MATCHING TRIPS IN THE DAO");
+		System.out.println(matchingTrips);
+		return matchingTrips;
+		
 	}
 		
 	

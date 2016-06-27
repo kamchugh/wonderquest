@@ -37,7 +37,7 @@
 		
 		<h3> Or search by </h3>
 		
-			<form action="viewSpecificTrip.do" method="GET">
+		<form action="viewSpecificTrip.do" method="GET">
 			<input type="text" placeholder="city" name="city" /> 
 			<input type="text" placeholder="country" name="country" />
 			<input type="text" placeholder="continent" name="continent" /> 
@@ -47,12 +47,6 @@
 		<br>
 		
 		<a href="buildYourTrip.do" >Or start building your own trip!</a>
-		
-		
-		
-			
-			
-			
 			
 				<c:if test="${! empty(user)}">
 					
@@ -77,6 +71,20 @@
 						</c:if>
 					</c:forEach>
 				</c:if>
+				
+					<c:if test="${! empty(allMatchingLegs)}">
+					<c:forEach var="matchingLeg" items="${allMatchingLegs}">
+						<c:if test="${! empty(matchingLeg)}">
+							<div>
+								${matchingLeg.description}
+				
+							</div>
+						</c:if>
+					</c:forEach>
+				</c:if>
+				
+				
+			
 <script src="apps.js"></script>
 </body>
 </html>

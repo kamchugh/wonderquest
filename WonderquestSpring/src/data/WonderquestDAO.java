@@ -2,6 +2,7 @@ package data;
 
 import java.util.List;
 
+import entities.LegOfTrip;
 import entities.Trip;
 import entities.User;
 
@@ -11,4 +12,6 @@ public interface WonderquestDAO {
 	public int addUser(String username, String password, String fname, String lname, String gender, String nationality, String emailAddress, String profImage);
 	public List<User> getAllUsers();
 	public List<Trip> getAllTrips();
+	public List<LegOfTrip> getAllMatchingTrips(String city, String country, String continent, String lengthOfLeg);
+	public List<LegOfTrip> getAllLegsOfTrips();
 }
