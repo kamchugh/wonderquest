@@ -82,11 +82,17 @@ public class Country {
 	public void setContinent(Continent continent) {
 		this.continent = continent;
 	}
+	
+	public int getContinent_id() {
+		int continent_id = continent.getId();
+		return continent_id;
+	}
+
 
 	@Override
 	public String toString() {
-		return "Country [id=" + id + ", name=" + name + ", description=" + description + ", cities=" + cities
-				+ ", continent=" + continent + "]";
+		return "Country [id=" + id + ", name=" + name + ", description=" + description
+				+ "]";
 	}
 	
 	

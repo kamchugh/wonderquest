@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import data.WonderquestDAO;
+import entities.City;
 import entities.LegOfTrip;
+import entities.Length;
+import entities.TransportationTo;
 import entities.Trip;
 import entities.User;
 
@@ -54,6 +57,34 @@ public class WonderquestController {
 		return mv;
 	}
 	
+	@RequestMapping("viewTrip.do")
+	public ModelAndView viewSingleTrips(@RequestParam("tripId") String tripId) {
+		Trip trip = dao.getTripById(Integer.parseInt(tripId));
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("singleTrip.jsp");
+		mv.addObject("trip", trip);
+		return mv;
+	}
+	
+	@RequestMapping("toTripBuild.do")
+	public ModelAndView viewTripBuild(@RequestParam("tripId") String tripId) {
+		Trip trip = dao.getTripById(Integer.parseInt(tripId));
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("tripBuild.jsp");
+		mv.addObject("passedTrip", trip);
+		mv.addObject("trip", trip);
+		return mv;
+	}
+	
+	// go to edit leg page 
+//	@RequestMapping("editLeg.do") 
+//	public ModelAndView editPage(@RequestParam("legId") String legId) {
+//		ModelAndView mv = new ModelAndView();
+//		mv.setViewName("tripBuild.jsp");
+//		mv.addObject("leg", leg);
+//		return mv;
+//	}
+	
 	// figure out what to do here if someone isn't signed in 
 	
 	@RequestMapping("buildYourTrip.do")
@@ -67,7 +98,7 @@ public class WonderquestController {
 		return mv;
 	}
 	
-	// create the first leg of a new trip
+	
 	
 	
 	// sign a user in
@@ -84,6 +115,47 @@ public class WonderquestController {
 		session.setAttribute("user", user);
 		return mv;
 	}
+	
+	
+	// create a new trip 
+	@RequestMapping("createTrip.do") 
+	public ModelAndView createTrip(@RequestParam("tripName") String tripName, @ModelAttribute("user") User user, HttpSession session) {
+		System.out.println(tripName);
+		System.out.println(user);
+		Trip trip = dao.createTrip(tripName, user);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("tripBuild.jsp");
+		mv.addObject("passedTrip", trip);
+		session.setAttribute("trip", trip);
+		//mv.addObject("trip", trip);
+		return mv;
+	}
+	
+	// create a new leg for a trip
+	@RequestMapping("addLeg.do") 
+	public ModelAndView addLeg(@RequestParam("city") String city, @RequestParam("country") String country,
+			@RequestParam("continent") String continent, @RequestParam("typeOfTransportation") String typeofTransportation,
+			@RequestParam("time") String time, @RequestParam("length") String lengthDescription, 
+			@RequestParam("tripId") String tripId, @ModelAttribute("user") User user,
+			@RequestParam("description") String description) {
+		Length lengthOfTrip = dao.getLengthByDescription(lengthDescription);
+		City cityForTrip = dao.getCityForLegOfTrip(city, country, continent);
+		LegOfTrip leg = dao.createLeg(Integer.parseInt(tripId), cityForTrip, lengthOfTrip, description);
+		Trip passedTrip = dao.getTripById(Integer.parseInt(tripId));
+		TransportationTo newTrans = dao.createTransportationTo(typeofTransportation, time, leg);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("tripBuild.jsp");
+		//mv.addObject("tripId", tripId);
+		mv.addObject("leg", leg);
+		mv.addObject("transportation", newTrans);
+		mv.addObject("passedTrip", passedTrip);
+		return mv;
+		
+	}
+		
+	
+	
+	// view specific trip legs that meet certain criteria 
 	
 	@RequestMapping("viewSpecificTrip.do")
 	public ModelAndView viewSpecificTrips(@RequestParam("city") String city,

@@ -46,7 +46,9 @@ public class LegOfTrip {
 	@ManyToOne
 	private Trip trip;
 	
-	@OneToOne(mappedBy="legOfTrip", cascade=CascadeType.ALL)
+	@JoinColumn(name = "length_id")
+	@OneToOne
+	(mappedBy="legOfTrip", cascade=CascadeType.MERGE)
 	private Length length;
 	
 	@OneToMany(mappedBy = "legOfTrip")

@@ -67,7 +67,7 @@ public class Continent {
 
 	@Override
 	public String toString() {
-		return "Continent [id=" + id + ", name=" + name + ", description=" + description + ", countries=" + countries
+		return "Continent [id=" + id + ", name=" + name + ", description=" + description
 				+ "]";
 	}
 	

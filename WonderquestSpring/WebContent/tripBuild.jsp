@@ -8,23 +8,44 @@
 <title>Start building your trip</title>
 </head>
 <body>
-
-		<form action="addLeg.do" method="POST">
-		<c:if test="${ empty(firstLeg)}">
-			<p>What's the name of this trip?</p>
-			<input type="text" placeholder="tripName" name="name" /> 
+		<c:if test="${ empty(trip)}">
+		
+		<form action="createTrip.do" method="POST">
+		<p>What's the name of this trip?</p>
+		<input type="text" placeholder="tripName" name="tripName" /> 
+		<input type="submit" value="Start planning this trip" />
+		<!-- add a start date here when you figure it out -->
+		</form>
+		
 		</c:if>
-			
-			<p>Where do you want to go 
-			
-			<c:if test="${ empty(firstLeg)}">
+		<c:if test="${! empty(trip)}">
+		<h1> Let's get started on ${trip.name}!</h1>
+		<h4> Here's your trip so far </h4>
+			<c:if test="${! empty(passedTrip)}">
+				<c:forEach var="leg" items="${passedTrip.legsOfTrip}">
+				
+					<c:if test="${! empty(leg)}">
+						<div>
+							Leg : ${leg.id}
+							<form action="editLeg.do" method="POST">
+							<input type="hidden" value="${leg.id}" name="legId" /> 
+							<input type="submit" value="Edit this leg" />
+							<!-- add a start date here when you figure it out -->
+							</form>
+						</div>
+					</c:if>
+				</c:forEach>
+			</c:if>												
+		<form action="addLeg.do" method="POST">	
+			<p>Where do you want to go 	
+			<c:if test="${ empty(leg)}">
 			first?
-			</c:if>
-			
-			<c:if test="${! empty(firstLeg)}">
+			</c:if>	
+			<c:if test="${! empty(leg)}">
 			next?
 			</c:if>
 			</p>
+			<input type="text" placeholder="${trip.id}" name="tripId" />
 			<input type="text" placeholder="city" name="city" />
 			<input type="text" placeholder="country" name="country" />
 			<input type="text" placeholder="continent" name="continent" />
@@ -34,9 +55,16 @@
 			<input type="text" placeholder="time" name="time" /> 
 			<p>How long do you think you'll be there?</p> 
 			<input type="text" placeholder="length" name="length" /> 
+			<p>Any notes you want to leave for yourself on what you might do?</p> 
+			<input type="text" placeholder="description" name="description" /> 
 			<input type="submit" value="Plan the next leg of this trip" />
 		</form>	
+		</c:if>
 		
+		
+		<c:if test="${! empty(trip)}">
+		<a href="myPage.jsp"> I'm done planning this trip for now. Take me to my page! </a>
+		</c:if>
 		<h1> Stumped? See what others did. </h1>
 		
 		<form action="viewSpecificTrip.do" method="GET">

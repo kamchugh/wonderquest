@@ -9,7 +9,12 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import entities.City;
+import entities.Continent;
+import entities.Country;
 import entities.LegOfTrip;
+import entities.Length;
+import entities.TransportationTo;
 import entities.Trip;
 import entities.User;
 
@@ -69,6 +74,33 @@ public class WonderquestJPADAO implements WonderquestDAO {
 		return allUsers;
 	}
 	
+	//get a trip by id 
+	public Trip getTripById(int tripId) {
+		Trip trip = em.find(Trip.class, tripId);
+		return trip;
+	}
+	
+	// get length of trip by description
+	
+	public Length getLengthByDescription(String description) {	
+		Length length = em.createQuery("select l from Length l WHERE l.time_description = " + "'" + description + "'", Length.class).getSingleResult();
+		return length;
+	}
+	
+	
+	// get the city for the leg of a trip, passing in country and continent 
+	public City getCityForLegOfTrip(String city, String country, String continent) {
+		System.out.println("IN GET CITY FOR LEG OF TRIP");
+		Continent returnedContinent = em.createQuery("select c from Continent c where c.name = " + "'" + continent + "'", Continent.class).getSingleResult();
+		System.out.println(returnedContinent);
+		Country returnedCountry = em.createQuery("select c from Country c WHERE c.name = " + "'" + country + "' AND c.continent.id =" + returnedContinent.getId(), Country.class).getSingleResult();
+		System.out.println(returnedCountry);
+		City returnedCity = em.createQuery("select c from City c where c.name = " + "'" + city + "' and c.country.id =" + "'" + returnedCountry.getId() + "'", City.class).getSingleResult();
+		System.out.println(returnedCity);
+		return returnedCity;
+	}
+	
+	
 	//get a list of all the trips
 	public List<Trip> getAllTrips() {
 		String search = "select t from Trip t";
@@ -81,6 +113,51 @@ public class WonderquestJPADAO implements WonderquestDAO {
 		String search = "select l from LegOfTrip l";
 		List<LegOfTrip> allLegsOfTrips = em.createQuery(search, LegOfTrip.class).getResultList();
 		return allLegsOfTrips;
+	}
+	
+	
+	// create a new trip for a user
+	public Trip createTrip(String tripName, User user) {
+		
+		Trip newTrip = new Trip();
+		newTrip.setName(tripName);
+		newTrip.setUser(user);
+		em.persist(newTrip);
+		return newTrip;
+		
+	}
+	
+	public TransportationTo createTransportationTo(String type, String time, LegOfTrip leg) {
+		System.out.println("got into the jpadao");
+		System.out.println(leg);
+		TransportationTo newTrans = new TransportationTo();
+		newTrans.setTime(time);
+		newTrans.setType(type);
+		newTrans.setLegOfTrip(leg);
+		System.out.println("got right before persist");
+		em.persist(newTrans);
+		System.out.println("got through persist");
+		return newTrans;
+		
+	}
+	
+	// create a new leg of a trip for a user 
+	public LegOfTrip createLeg(int tripId, City city, Length length, String description) {
+		System.out.println("IN CREATE NEW LEG OF TRIP");
+		System.out.println(tripId);
+		System.out.println(city);
+		System.out.println(length);
+		System.out.println(description);
+		LegOfTrip newLeg = new LegOfTrip();
+		Trip trip = getTripById(tripId);
+		newLeg.setTrip(trip);
+		newLeg.setCity(city);
+		// length doesn't seem to be persisting - detached entity problem
+		newLeg.setLength(length);
+		newLeg.setComplete(false);
+		newLeg.setDescription(description);
+		em.persist(newLeg);
+		return newLeg;
 	}
 	
 	//get all matching trips

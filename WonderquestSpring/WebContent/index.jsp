@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Wonderquest Travel</title>
 </head>
 <body>
 	<div id="signIn">
@@ -29,9 +29,13 @@
 			<input type="submit" value="Sign Up" />
 		</form>
 		
+		<c:if test="${! empty(user)}">
+			<a href="myPage.jsp"> My profile </a>
+		</c:if>
+		
 		<br>
 			<form action="gettrips.do" method="GET">
-			<input type="text" placeholder="1" name="id" /> 
+			<input type="text" placeholder="${user.id}" name="id" /> 
 			<input type="submit" value="Get Trips" />
 		</form>
 		
